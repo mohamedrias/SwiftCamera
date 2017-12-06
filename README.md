@@ -26,7 +26,7 @@ pod 'SwiftCamera'
 
 ## Author
 
-Mohamed Rias <mohamedrias@gmail.com>
+Mohamed Rias @techieblogger (facebook)
 
 ## License
 
