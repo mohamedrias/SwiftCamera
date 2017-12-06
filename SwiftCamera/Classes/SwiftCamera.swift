@@ -55,7 +55,7 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
         
         self.authorizeCamera();
         
-        self.sessionQueue = dispatch_queue_create("com.mohamedrias.cameracontroller.queue", DISPATCH_QUEUE_SERIAL)
+        self.sessionQueue = dispatch_queue_create("com.mohamedrias.swiftcamera.queue", DISPATCH_QUEUE_SERIAL)
         
     }
     
