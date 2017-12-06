@@ -7,36 +7,28 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'SwiftCamera'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of SwiftCamera.'
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+  s.name         = "SwiftCamera"
+  s.version      = "1.0.0"
+  s.summary      = "Swift Camera"
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
-
-  s.homepage         = 'https://github.com/mohamedrias@gmail.com/SwiftCamera'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'mohamedrias@gmail.com' => 'mohamed.rias@cbd.ae' }
-  s.source           = { :git => 'https://github.com/mohamedrias@gmail.com/SwiftCamera.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
-  s.ios.deployment_target = '8.0'
-
-  s.source_files = 'SwiftCamera/Classes/**/*'
+  s.homepage     = "https://github.com/mohamedrias/SwiftCamera"
   
-  # s.resource_bundles = {
-  #   'SwiftCamera' => ['SwiftCamera/Assets/*.png']
-  # }
+  s.license      = { :type => "MIT", :file => "LICENSE" }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.author             = { "Mohamed Rias" => "mohamedrias@gmail.com" }
+  s.social_media_url   = "http://facebook.com/techieblogger"
+
+  s.platform     = :ios
+  s.ios.deployment_target = "8.0"
+
+  s.source       = { :git => "https://github.com/mohamedrias/SwiftCamera.git", :tag => "v1.0.0" }
+
+  s.source_files  = "SwiftCamera", "SwiftCamera/Classes/*.swift"
+
+  s.frameworks  = "UIKit", "AVFoundation", "CoreMedia", "CoreImage"
+
+  s.requires_arc = true
+  s.pod_target_xcconfig = { 'OTHER_SWIFT_FLAGS[config=Debug]' => '-D DEBUG' }
+
 end

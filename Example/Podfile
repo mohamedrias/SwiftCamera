@@ -1,4 +1,6 @@
 use_frameworks!
+ENV["COCOAPODS_DISABLE_STATS"] = "true"
+
 
 target 'SwiftCamera_Example' do
   pod 'SwiftCamera', :path => '../'

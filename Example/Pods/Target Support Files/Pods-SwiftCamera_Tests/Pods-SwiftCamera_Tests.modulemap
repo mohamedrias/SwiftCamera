@@ -1,0 +1,6 @@
+framework module Pods_SwiftCamera_Tests {
+  umbrella header "Pods-SwiftCamera_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

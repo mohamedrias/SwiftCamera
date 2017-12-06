@@ -1,6 +1,6 @@
 # SwiftCamera
 
-[![CI Status](http://img.shields.io/travis/mohamedrias@gmail.com/SwiftCamera.svg?style=flat)](https://travis-ci.org/mohamedrias@gmail.com/SwiftCamera)
+[![CI Status](http://img.shields.io/travis/mohamedrias/SwiftCamera.svg?style=flat)](https://travis-ci.org/mohamedrias/SwiftCamera)
 [![Version](https://img.shields.io/cocoapods/v/SwiftCamera.svg?style=flat)](http://cocoapods.org/pods/SwiftCamera)
 [![License](https://img.shields.io/cocoapods/l/SwiftCamera.svg?style=flat)](http://cocoapods.org/pods/SwiftCamera)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftCamera.svg?style=flat)](http://cocoapods.org/pods/SwiftCamera)
@@ -22,7 +22,7 @@ pod 'SwiftCamera'
 
 ## Author
 
-mohamedrias@gmail.com, mohamed.rias@cbd.ae
+Mohamed Rias <mohamedrias@gmail.com>
 
 ## License
 
