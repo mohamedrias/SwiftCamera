@@ -7,6 +7,7 @@
 //
 import AVFoundation
 
+//Builder to configure the camera before initiation
 public class SwiftCameraBuilder {
     
     private var cameraController: SwiftCamera!

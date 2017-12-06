@@ -65,9 +65,16 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
     }
     
     
-    /* Instance Methods
+    /* Instance Methods - Public
      ------------------------------------------*/
     
+    /**
+     Configure the SwiftCamera instance with the appropriate properties
+     
+     - parameter builder: SwiftCameraBuilder instance with the config attributes
+     
+     - returns: SwiftCamera instance
+     */
     public func configure(builder: SwiftCameraBuilder) -> SwiftCamera {
         dispatch_async(self.sessionQueue, {
             self.session.beginConfiguration()
@@ -87,6 +94,14 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
     }
     
     
+    /**
+     Specifies the previewLayer for the camera view. Any custom camera preview view should be passed to this instance
+     
+     - parameter videoPreview: UIView used for previewing the camera source
+     - parameter videoAspect:  Aspect ratio of the camera
+     
+     - returns: AVCaptureVideoPreviewLayer
+     */
     public func setupPreviewLayer(videoPreview: UIView, videoAspect: VideoAspect) -> AVCaptureVideoPreviewLayer {
         self.previewLayer = AVCaptureVideoPreviewLayer(session: self.session)
         self.previewView = videoPreview
@@ -95,25 +110,32 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
         self.previewLayer.position = CGPointMake(CGRectGetMidX(self.previewView.bounds), CGRectGetMidY(self.previewView.bounds))
         self.previewLayer.videoGravity = videoAspect.gravity()
         self.previewView.layer.addSublayer(self.previewLayer)
-        //let tap = UITapGestureRecognizer(target: self, action: #selector(handleTouch(_:)))
-        //videoPreview.addGestureRecognizer(tap)
         return self.previewLayer
         
     }
-    //    
-    //    func handleTouch(recognizer: UITapGestureRecognizer) {
-    //        let point = recognizer.locationInView(self.previewView)
-    //        focusAndExposeAtPoint(point)
-    //    }
     
-    func isCameraAuthorized(completion:(granted: Bool) -> Void) {
+    
+    /**
+     Specifies whether camera permission is given to the user or not
+     
+     - parameter completion: Completion handler with the boolean attribute passed to it 
+     which specifies whether permission is granted or not/.
+     */
+    public func isCameraAuthorized(completion:(granted: Bool) -> Void) {
         AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: {
             (granted: Bool) -> Void in
             completion(granted: granted)
         })
     }
     
-    func authorizeCamera() {
+    
+    /**
+     Useful to request permission from the user. If delegate is set, the delegate will be invoked. 
+     Handle the permission message as required.
+     
+     If no delegate is set, default alert will be shown.
+     */
+    public func authorizeCamera() {
         AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: {
             (granted: Bool) -> Void in
             // If permission hasn't been granted, notify the user.
@@ -133,52 +155,9 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
         });
     }
     
-    
-    // Setup camera input device (back facing camera) and add input feed to our AVCaptureSession session.
-    func addVideoInput() -> Bool {
-        var success: Bool = false
-        let videoDevice: AVCaptureDevice = SwiftCamera.deviceWithMediaType(AVMediaTypeVideo, position: self.cameraPosition)
-        do  {
-            self.videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice) as AVCaptureDeviceInput;
-            //### When error occures, the rest of the code in do-catch will not be executed, you have no need to check `error`.
-            if self.session.canAddInput(self.videoDeviceInput) {
-                self.session.addInput(self.videoDeviceInput)
-                success = true
-            }
-        } catch let error as NSError {
-            // Handle all errors
-            print(error)
-            //...
-        }
-        
-        return success
-    }
-    
-    // Setup capture output for our video device input.
-    func addVideoOutput() {
-        
-        self.videoDeviceOutput = AVCaptureVideoDataOutput()
-        self.videoDeviceOutput.videoSettings = [
-            kCVPixelBufferPixelFormatTypeKey : Int(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange)
-        ]
-        self.videoDeviceOutput.alwaysDiscardsLateVideoFrames = true
-        
-        self.videoDeviceOutput.setSampleBufferDelegate(self, queue: self.sessionQueue)
-        
-        if self.session.canAddOutput(self.videoDeviceOutput) {
-            self.session.addOutput(self.videoDeviceOutput)
-        }
-    }
-    
-    func addStillImageOutput() {
-        self.stillImageOutput = AVCaptureStillImageOutput()
-        self.stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
-        
-        if self.session.canAddOutput(self.stillImageOutput) {
-            self.session.addOutput(self.stillImageOutput)
-        }
-    }
-    
+    /**
+     Start camera method to instantiate the camera view
+     */
     public func startCamera() {
         dispatch_async(self.sessionQueue, {
             let weakSelf: SwiftCamera? = self
@@ -195,6 +174,9 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
         })
     }
     
+    /**
+     Stop the camera view and deallocate memory consumed
+     */
     public func teardownCamera() {
         dispatch_async(self.sessionQueue, {
             self.session.stopRunning()
@@ -202,6 +184,12 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
         })
     }
     
+    
+    /**
+     Add touch gesture to the view to manually focus the camera
+     
+     - parameter point: CGPoint
+     */
     public func focusAndExposeAtPoint(point: CGPoint) {
         dispatch_async(self.sessionQueue, {
             let device: AVCaptureDevice = self.videoDeviceInput.device
@@ -224,6 +212,7 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
             }
         })
     }
+    
     
     public func captureImage(completion:((image: UIImage?, error: NSError?) -> Void)?) {
         if completion == nil || self.stillImageOutput == nil{
@@ -256,11 +245,70 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
         }
     }
     
+    
+    
+    /* Instance Methods - Private
+     ------------------------------------------*/
+    
+    /**
+     Setup camera input device (back facing camera) and add input feed to our AVCaptureSession session.
+     
+     - returns: Boolean
+     */
+    func addVideoInput() -> Bool {
+        var success: Bool = false
+        let videoDevice: AVCaptureDevice = SwiftCamera.deviceWithMediaType(AVMediaTypeVideo, position: self.cameraPosition)
+        do  {
+            self.videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice) as AVCaptureDeviceInput;
+            //### When error occures, the rest of the code in do-catch will not be executed, you have no need to check `error`.
+            if self.session.canAddInput(self.videoDeviceInput) {
+                self.session.addInput(self.videoDeviceInput)
+                success = true
+            }
+        } catch let error as NSError {
+            // Handle all errors
+            print(error)
+            //...
+        }
+        
+        return success
+    }
+    
+    /**
+     Setup capture output for our video device input.
+     */
+    func addVideoOutput() {
+        
+        self.videoDeviceOutput = AVCaptureVideoDataOutput()
+        self.videoDeviceOutput.videoSettings = [
+            kCVPixelBufferPixelFormatTypeKey : Int(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange)
+        ]
+        self.videoDeviceOutput.alwaysDiscardsLateVideoFrames = true
+        
+        self.videoDeviceOutput.setSampleBufferDelegate(self, queue: self.sessionQueue)
+        
+        if self.session.canAddOutput(self.videoDeviceOutput) {
+            self.session.addOutput(self.videoDeviceOutput)
+        }
+    }
+    
+    /**
+     Whether to have capability to capture still image from the camera source
+     */
+    func addStillImageOutput() {
+        self.stillImageOutput = AVCaptureStillImageOutput()
+        self.stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+        
+        if self.session.canAddOutput(self.stillImageOutput) {
+            self.session.addOutput(self.stillImageOutput)
+        }
+    }
+    
+    
     func captureStillImageFromPreviewLayer(image: UIImage) -> UIImage? {
         let originalSize : CGSize
-        let visibleLayerFrame = self.previewView.bounds // THE ACTUAL VISIBLE AREA IN THE LAYER FRAME
-        
-        // Calculate the fractional size that is shown in the preview
+        // The actual visible layer in the camera frame
+        let visibleLayerFrame = self.previewView.bounds
         let metaRect : CGRect = (self.previewLayer?.metadataOutputRectOfInterestForRect(visibleLayerFrame))!
         if (image.imageOrientation == UIImageOrientation.Left || image.imageOrientation == UIImageOrientation.Right) {
             // For these images (which are portrait), swap the size of the
@@ -286,6 +334,7 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
         return finalImage
     }
     
+    
     /* AVCaptureVideoDataOutputSampleBufferDelegate Delegate Methods
      ------------------------------------------*/
     
@@ -294,6 +343,13 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
     }
     
     
+    /**
+     Enum to define the camera aspect
+     
+     - AspectFill:  Fills the screen with aspect
+     - AspectFit:   Fits the screen as per the aspect
+     - ScaleToFill: Fills the screen without aspect
+     */
     public enum VideoAspect {
         case AspectFill, AspectFit, ScaleToFill
         
