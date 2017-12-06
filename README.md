@@ -11,6 +11,10 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
+- iOS 8.0+ / macOS 10.10+ / tvOS 9.0+ / watchOS 2.0+
+- Xcode 7.3+
+- Swift 2.3
+
 ## Installation
 
 SwiftCamera is available through [CocoaPods](http://cocoapods.org). To install
