@@ -50,10 +50,10 @@ class ViewController: UIViewController, SwiftCameraDelegate {
      ------------------------------------------*/
     
     func cameraSessionDidOutputSampleBuffer(sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-        if (connection.supportsVideoOrientation) {
+        if connection.supportsVideoOrientation {
             connection.videoOrientation = AVCaptureVideoOrientation.Portrait
         }
-        if (connection.supportsVideoMirroring) {
+        if connection.supportsVideoMirroring {
             connection.videoMirrored = true
         }
     }

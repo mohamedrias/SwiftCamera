@@ -172,6 +172,7 @@
 				607FACCE1AFB9204008FA782 /* Resources */,
 				A86E63F547C484B4902F3FF7 /* [CP] Embed Pods Frameworks */,
 				A42DF4C0229D705271BDF376 /* [CP] Copy Pods Resources */,
+				159DC0F01FDD04FD00573A22 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -264,6 +265,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		159DC0F01FDD04FD00573A22 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = /usr/local/bin/swiftlint;
+		};
 		61778139DD65090091098886 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

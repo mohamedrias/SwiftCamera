@@ -214,6 +214,11 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
     }
     
     
+    /**
+     Captures the image from the preview layer
+     
+     - parameter completion: (image: UIImage?, error: NSError?)
+     */
     public func captureImage(completion:((image: UIImage?, error: NSError?) -> Void)?) {
         if completion == nil || self.stillImageOutput == nil{
             return
@@ -305,6 +310,13 @@ public class SwiftCamera: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate
     }
     
     
+    /**
+     Captures still image from the preview layer and also crops it to the dimension of the preview.
+     
+     - parameter image: UIImage
+     
+     - returns: Cropped image as per the preview layer
+     */
     func captureStillImageFromPreviewLayer(image: UIImage) -> UIImage? {
         let originalSize : CGSize
         // The actual visible layer in the camera frame
